@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>My Projects</title>
+        <link rel="stylesheet" href="styles.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css2?family=Merriweather&family=Montserrat&family=Sacramento&display=swap" rel="stylesheet">
+    </head>
+
+    
+    <body>
+        <h1>Project</h1>
+
+        <ul>
+            {% for project in projects %}
+            <li><a href="/project/{{project.project_id}}">{{ project.title }}</a></li>
+            <!-- <li><a href="/project/2">Project 2</a></li>
+            <li><a href="/project/3">Project 3</a></li> -->
+            {% endfor %}
+        </ul>
+
+        <br>
+
+        <h3>Add new project</h3>
+        <form action="/add/project" method="POST">
+            <div>
+                Project Name: <input type="text" name="project-title">
+            </div>
+            <br>
+            <input type="submit" value="Add Project">
+        </form>
+
+        {% for category, message in get_flashed_messages(with_categories=true) %}
+        <div style="color: {{ category }}">{{ message }}</div>
+        {% endfor %}
+    </body>
+</html>
