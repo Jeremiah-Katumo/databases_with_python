@@ -1,9 +1,16 @@
 from flask import Flask, render_template, request, flash, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
+from flask_bootstrap import Bootstrap
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired
+# from flask_mail import Mail
+# from flask_mail import Message
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:Password@localhost:5432/project_tracker'
-app.config['SECRET_KEY'] = '\x17\x88a\xffv\xaf.\xce~T\x9b\xa7D1\x003\xfa\xa2=\xc7\xae\xda\x80x'
+app.config['SECRET_KEY'] = 'SECRET_KEY'
+bootstrap = Bootstrap(app)
 
 db = SQLAlchemy(app)
 
@@ -60,16 +67,19 @@ def add_task(project_id):
 @app.route("/delete/task/<task_id>", methods=['POST'])
 def delete_task(task_id):
     pending_delete_task = Tasks.query.filter_by(task_id=task_id).first()
-    original_project_id = pending_delete_task.project.project_id
+    original_project_title = pending_delete_task.project.title
     db.session.delete(pending_delete_task)
     db.session.commit()
-    return redirect(url_for('show_tasks', original_project_id))
+    flash("Task deleted successfuly from " + original_project_title, "red")
+    return redirect(url_for('show_project'))
 
-@app.route("/delete/task/<project_id>", methods=['POST'])
+@app.route("/delete/project/<project_id>", methods=['POST'])
 def delete_project(project_id):
     pending_delete_project = Project.query.filter_by(project_id=project_id).first()
+    # original_project_id = pending_delete_project.project.project_id
     db.session.delete(pending_delete_project)
     db.session.commit()
-    return redirect(url_for('show_projects'))
+    flash("Project deleted successfuly", "red")
+    return redirect(url_for('show_project'))
 
 app.run(debug=True, host="127.0.0.1", port=3000)
