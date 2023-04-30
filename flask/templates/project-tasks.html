@@ -1,23 +1,101 @@
-<!DOCTYPE html>
+{% extends "bootstrap/base.html" %}
+
 <html>
+{% block html%}
     <head>
+    {% block head %}
         <meta charset="utf-8">
-        <title>My Tasks</title>
-        <link rel="stylesheet" href="styles.css">
+        <title>{% block title %}My Tasks{% endblock %}</title>
+        <!-- <link rel="stylesheet" href="styles.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
-        <link href="https://fonts.googleapis.com/css2?family=Merriweather&family=Montserrat&family=Sacramento&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Merriweather&family=Montserrat&family=Sacramento&display=swap" rel="stylesheet"> -->
+        
+        {% block styles %}
+        <style>
+
+            nav {
+                background-color: black;
+            }
+
+            .navbar-header {
+                display: flex;
+                justify-content: center;
+                gap: 100px;
+            }
+            
+            body {
+                background-color: aqua;
+                /* background-image: url(images/background.png); */
+                font-family: "Roboto", sans-serif;
+                margin: 0px;
+                text-align: center;
+            }
+
+            a {
+                color: white;
+                text-decoration: none;
+            }
+            
+            h1 {
+                color: black;
+                font: 'Roboto', sans-serif;
+                font-size: 3.62rem;
+                line-height: 2px;
+                margin-top: 50px auto 0 auto;
+            }
+            
+            h2 {
+                color: #66BFBF;
+                font: "Roboto", sans-serif;
+                font-size: 150%;
+                font-weight: normal;
+                padding-bottom: 10px;
+            }
+
+            li {
+                list-style-type: none;
+            }
+            
+        </style>
+        {% endblock %}
+    {% endblock %}
     </head>
 
-
     <body>
+    {% block body %}
+
+        <nav>
+            {% block navbar %}
+            <div class="navbar-navbar-inverse" role="navigation">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle"
+                        data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="/">Projects</a>
+                    </div>
+                    <div class="navbar-collapse-collapse">
+                        <ul class="nav-navbar-nav">
+                            <li><a href="/">Home</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% endblock %}
+        </nav>
+
         <h1>{{project.title}}<!--Project {{project_id}}--></h1>
 
         <ul>
             {% for task in tasks %}
             <li>{{ task.description }}</li>
-            <!---<li>Task 3</li>
-            <li>Task 3</li> -->
+            <li>Task 3</li>
+            <!-- <li>Task 3</li> -->
             <form action="/delete/task/{{ task.task_id }}" method="POST">
                 <input type="submit" value="Delete Task">
             </form>
@@ -43,5 +121,7 @@
         {% for category, message in get_flashed_messages(with_categories=true) %}
         <div style="color: {{ category }}">{{ message }}</div>
         {% endfor %}
+    {% endblock %}
     </body>
+{% endblock %}
 </html>
